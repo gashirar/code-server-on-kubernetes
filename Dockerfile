@@ -60,6 +60,8 @@ RUN chmod g+rw /home && \
     chown -R coder:coder /home/coder/workspace;
 
 USER coder
+ENV DEFAULT_PASSWORD="P@ssw0rd"
+ENV PASSWORD=${PASSWORD:-DEFAULT_PASSWORD}
 
 RUN echo "source <(kubectl completion bash)" >> /home/coder/.bashrc && \
     echo 'export PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /home/coder/.bashrc
