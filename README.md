@@ -2,6 +2,8 @@
 
 code-server is VS Code running on a remote server, accessible through the browser. https://github.com/cdr/code-server
 
+*Sorry! Under Construction!*
+
 Authentication default password is `P@ssw0rd`.  
 You can overwrite password by environment variables.(`PASSWORD`)  
 
