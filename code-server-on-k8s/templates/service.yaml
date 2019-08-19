@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cs-{{ .Values.user }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: LoadBalancer
+  {{- if empty .Values.loadBalancerSourceRanges }}
+  {{- fail "A valid .Values.loadBalancerSourceRanges entry required!" }}
+  {{- end }}
+  loadBalancerSourceRanges:
+  {{- toYaml .Values.loadBalancerSourceRanges | nindent 2 -}}
+  selector:
+    app: cs-{{ .Values.user }}
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: cs-port
+    name: cs-service
+

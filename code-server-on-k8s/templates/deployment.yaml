@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cs-{{ .Values.user }}
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: cs-{{ .Values.user }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cs-{{ .Values.user }}
+    spec:
+      serviceAccountName: cs
+      automountServiceAccountToken: true
+      containers:
+      - name: cs
+        image: codercom/code-server
+        args:
+        - '--allow-http'
+        ports:
+        - containerPort: 8443
+          name: cs-port
+        securityContext:
+          privileged: true
+        env:
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cs-{{ .Values.user }}
+              key: password

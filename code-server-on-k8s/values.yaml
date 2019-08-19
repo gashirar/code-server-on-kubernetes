@@ -1,0 +1,14 @@
+# Default Values
+
+# Kubernetes namespace
+namespace: "theia-ide"
+
+# Basic Authentication Username
+user: "user"
+# Basic Authentication Password
+password: "P@ssw0rd"
+
+# IP whitelist
+loadBalancerSourceRanges: [] 
+
+
