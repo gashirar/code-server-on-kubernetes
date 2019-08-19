@@ -2,8 +2,6 @@
 
 code-server is VS Code running on a remote server, accessible through the browser. https://github.com/cdr/code-server
 
-*Sorry! Under Construction!*
-
 Authentication default password is `P@ssw0rd`.  
 You can overwrite password by environment variables.(`PASSWORD`)  
 
@@ -16,6 +14,11 @@ docker run -it -p 8443:8443 -v "$(pwd):/home/coder:cached" gashirar/code-server-
 ```
 
 ### k8s cluster
+
+*Sorry. Currently it cannot be run due to an error.It's under investigation.*
+```
+Error: ENOENT: no such file or directory, open '/src/packages/server/build/web/login/index.html'
+```
 
 Apply Helm Chart!
 ```
