@@ -60,13 +60,17 @@ RUN chmod g+rw /home && \
     chown -R coder:coder /home/coder/workspace;
 
 USER coder
+
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+        ~/.fzf/install
+
 ENV DEFAULT_PASSWORD="P@ssw0rd"
 ENV PASSWORD=${PASSWORD:-DEFAULT_PASSWORD}
 
 RUN echo "source <(kubectl completion bash)" >> /home/coder/.bashrc && \
     echo 'export PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /home/coder/.bashrc
 
-WORKDIR /home/coder/workspace
+WORKDIR /home/coder
 
 EXPOSE 8443
 

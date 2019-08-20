@@ -19,11 +19,13 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: cs
-        image: codercom/code-server
+        image: gashirar/code-server-on-k8s:latest
         args:
+        - '-p'
+        - '8080'
         - '--allow-http'
         ports:
-        - containerPort: 8443
+        - containerPort: 8080
           name: cs-port
         securityContext:
           privileged: true
@@ -33,3 +35,8 @@ spec:
             secretKeyRef:
               name: cs-{{ .Values.user }}
               key: password
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 1Gi
