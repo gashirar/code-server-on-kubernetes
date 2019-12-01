@@ -24,12 +24,14 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin/kubectl
 
-# helm
-RUN mkdir /tmp/helm && \
-    curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.14.3-linux-amd64.tar.gz -o /tmp/helm/helm.tar.gz && \
-    tar xzvf /tmp/helm/helm.tar.gz -C /tmp/helm/ && \
+## helm
+RUN HELM_VERSION=v3.0.0 && \
+    mkdir /tmp/helm && \
+    curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/helm/helm.tar.gz && \
+    tar xvf /tmp/helm/helm.tar.gz -C /tmp/helm/ && \ 
     chmod +x /tmp/helm/linux-amd64/helm && \
-    mv /tmp/helm/linux-amd64/helm /usr/local/bin/helm
+    sudo -S mv /tmp/helm/linux-amd64/helm /usr/local/bin/helm && \
+    rm -r /tmp/helm
 
 # kubectx/kubens/fzf
 RUN git clone https://github.com/ahmetb/kubectx /opt/kubectx && \
