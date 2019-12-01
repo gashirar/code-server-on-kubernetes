@@ -12,8 +12,9 @@ RUN apt-get update && apt-get install -y \
     wget \
     bash-completion
 
-RUN mkdir /tmp/code-server && \
-    curl -L https://github.com/cdr/code-server/releases/download/1.1156-vsc1.33.1/code-server1.1156-vsc1.33.1-linux-x64.tar.gz -o /tmp/code-server/code-server.tar.gz && \
+RUN CODE_SERVER_VERSION=2.1692-vsc1.39.2 && \
+    mkdir /tmp/code-server && \
+    curl -L https://github.com/cdr/code-server/releases/download/${CODE_SERVER_VERSION}/code-server${CODE_SERVER_VERSION}-linux-x86_64.tar.gz -o /tmp/code-server/code-server.tar.gz && \
     tar xzvf /tmp/code-server/code-server.tar.gz -C /tmp/code-server/ --strip-components 1 && \
     chmod +x /tmp/code-server/code-server && \
     mv /tmp/code-server/code-server /usr/local/bin/code-server && \
