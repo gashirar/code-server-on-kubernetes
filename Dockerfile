@@ -31,11 +31,6 @@ RUN mkdir /tmp/helm && \
     chmod +x /tmp/helm/linux-amd64/helm && \
     mv /tmp/helm/linux-amd64/helm /usr/local/bin/helm
 
-# kustomize
-RUN curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/v3.0.2/kustomize_3.0.2_linux_amd64 -o ./kustomize && \
-    chmod +x ./kustomize && \
-    mv ./kustomize /usr/local/bin/kustomize
-
 # kubectx/kubens/fzf
 RUN git clone https://github.com/ahmetb/kubectx /opt/kubectx && \
     ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx && \
