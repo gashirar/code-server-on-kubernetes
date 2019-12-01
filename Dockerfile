@@ -1,15 +1,15 @@
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y \
-	openssl \
-	net-tools \
-	git \
-	locales \
-	sudo \
-	dumb-init \
-	vim \
-	curl \
-	wget \
+    openssl \
+    net-tools \
+    git \
+    locales \
+    sudo \
+    dumb-init \
+    vim \
+    curl \
+    wget \
     bash-completion
 
 RUN mkdir /tmp/code-server && \
