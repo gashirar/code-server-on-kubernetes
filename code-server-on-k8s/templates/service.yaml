@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: cs-{{ .Values.user }}
+  name: code-server-{{ .Values.user }}
   namespace: {{ .Values.namespace }}
 spec:
   type: LoadBalancer
@@ -11,10 +11,10 @@ spec:
   loadBalancerSourceRanges:
   {{- toYaml .Values.loadBalancerSourceRanges | nindent 2 -}}
   selector:
-    app: cs-{{ .Values.user }}
+    app: code-server-{{ .Values.user }}
   ports:
   - protocol: TCP
     port: 80
-    targetPort: cs-port
-    name: cs-service
+    targetPort: code-server
+    name: code-server-{{ .Values.user }}
 

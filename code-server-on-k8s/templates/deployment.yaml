@@ -1,39 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cs-{{ .Values.user }}
-  {{- if .Values.namespace }}
+  name: code-server-{{ .Values.user }}
   namespace: {{ .Values.namespace }}
-  {{- end }}
 spec:
   selector:
     matchLabels:
-      app: cs-{{ .Values.user }}
+      app: code-server-{{ .Values.user }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: cs-{{ .Values.user }}
+        app: code-server-{{ .Values.user }}
     spec:
-      serviceAccountName: cs
+      serviceAccountName: code-server-{{ .Values.user }}
       automountServiceAccountToken: true
       containers:
-      - name: cs
+      - name: code-server
         image: gashirar/code-server-on-k8s:latest
-        args:
-        - '-p'
-        - '8080'
-        - '--allow-http'
         ports:
         - containerPort: 8080
-          name: cs-port
+          name: code-server
         securityContext:
           privileged: true
         env:
         - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: cs-{{ .Values.user }}
+              name: code-server-{{ .Values.user }}
               key: password
         resources:
           limits:
