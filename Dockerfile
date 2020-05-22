@@ -12,13 +12,19 @@ RUN apt-get update && apt-get install -y \
     wget \
     bash-completion
 
-RUN CODE_SERVER_VERSION=2.1692-vsc1.39.2 && \
-    mkdir /tmp/code-server && \
-    curl -L https://github.com/cdr/code-server/releases/download/${CODE_SERVER_VERSION}/code-server${CODE_SERVER_VERSION}-linux-x86_64.tar.gz -o /tmp/code-server/code-server.tar.gz && \
-    tar xzvf /tmp/code-server/code-server.tar.gz -C /tmp/code-server/ --strip-components 1 && \
-    chmod +x /tmp/code-server/code-server && \
-    mv /tmp/code-server/code-server /usr/local/bin/code-server && \
-    rm -rf /tmp/code-server
+RUN chsh -s /bin/bash
+ENV SHELL=/bin/bash
+
+RUN ARCH=amd64 && \
+    curl -sSL "https://github.com/boxboat/fixuid/releases/download/v0.4.1/fixuid-0.4.1-linux-$ARCH.tar.gz" | tar -C /usr/local/bin -xzf - && \
+    chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid && \
+    printf "user: coder\ngroup: coder\n" > /etc/fixuid/config.yml
+
+RUN CODE_SERVER_VERSION=3.3.1 && \
+    curl -sSOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server_${CODE_SERVER_VERSION}_amd64.deb && \
+    sudo dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
 
 ## kubectl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
@@ -29,7 +35,7 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
 RUN HELM_VERSION=v3.0.0 && \
     mkdir /tmp/helm && \
     curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/helm/helm.tar.gz && \
-    tar xvf /tmp/helm/helm.tar.gz -C /tmp/helm/ && \ 
+    tar xvf /tmp/helm/helm.tar.gz -C /tmp/helm/ && \
     chmod +x /tmp/helm/linux-amd64/helm && \
     sudo -S mv /tmp/helm/linux-amd64/helm /usr/local/bin/helm && \
     rm -r /tmp/helm
@@ -51,7 +57,6 @@ RUN adduser --disabled-password --gecos '' coder && \
     adduser coder sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers;
 
-
 RUN chmod g+rw /home && \
     mkdir -p /home/coder/workspace && \
     chown -R coder:coder /home/coder && \
@@ -62,14 +67,13 @@ USER coder
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
         ~/.fzf/install
 
-ENV DEFAULT_PASSWORD="P@ssw0rd"
-ENV PASSWORD=${PASSWORD:-DEFAULT_PASSWORD}
+ENV PASSWORD=${PASSWORD:-P@ssw0rd}
 
 RUN echo "source <(kubectl completion bash)" >> /home/coder/.bashrc && \
     echo 'export PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /home/coder/.bashrc
 
-WORKDIR /home/coder
+WORKDIR /home/coder/project
 
-EXPOSE 8443
+EXPOSE 8080
 
-ENTRYPOINT ["dumb-init", "code-server"]
+ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/bin/code-server", "--bind-addr", "0.0.0.0:8080", "."]
