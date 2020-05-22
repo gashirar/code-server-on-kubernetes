@@ -1,7 +1,7 @@
 # Default Values
 
 # Kubernetes namespace
-namespace: "theia-ide"
+namespace: "code-server"
 
 # Basic Authentication Username
 user: "user"
@@ -11,4 +11,5 @@ password: "P@ssw0rd"
 # IP whitelist
 loadBalancerSourceRanges: [] 
 
-
+# Ingress Hostname
+host: code-server.dev

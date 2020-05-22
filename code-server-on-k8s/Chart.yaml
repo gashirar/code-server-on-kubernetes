@@ -1,4 +1,5 @@
-name: code-server-k8s
+apiVersion: v1
+name: code-server-on-k8s
 description: A Web-IDE for Kubernetes
 version: 0.1.0
 kubeVersion: ">=1.11.0"
