@@ -10,12 +10,12 @@ You can overwrite password by environment variables.(`PASSWORD`)
 ### local
 This script pulls the image and runs Theia IDE on https://localhost:8443 with the current directory as a workspace.
 ```
-docker run -it -p 8443:8443 -v "$(pwd):/home/coder:cached" gashirar/code-server-on-k8s:latest
+docker run -it -p 127.0.0.1:8080:8080 -v "$PWD:/home/coderi/project" -u "$(id -u):$(id -g)" gashirar/code-server-on-k8s:latest
 ```
 
 ### k8s cluster
 
 Apply Helm Chart!
 ```
-helm template . --set user=<YOURNAME> --set password=<YOURPASSWORD> --set namespace=<YOURNAMESPACE> --set loadBalancerSourceRanges={0.0.0.0/0} | kubectl apply -f -
+helm template . --set user=<YOURNAME> --set password=<YOURPASSWORD> --set namespace=<YOURNAMESPACE> | kubectl apply -f -
 ```
