@@ -9,7 +9,7 @@ spec:
   {{- fail "A valid .Values.loadBalancerSourceRanges entry required!" }}
   {{- end }}
   loadBalancerSourceRanges:
-  {{- toYaml .Values.loadBalancerSourceRanges | nindent 2 -}}
+  {{- toYaml .Values.loadBalancerSourceRanges | nindent 2 }}
   selector:
     app: code-server-{{ .Values.user }}
   ports:
